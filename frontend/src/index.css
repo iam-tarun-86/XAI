@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #09090b;
+    color: #fafafa;
+    font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+  }
+}
+
+.glass-panel {
+  background-color: rgba(24, 24, 27, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(39, 39, 42, 0.6);
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.glow-btn {
+  background-image: linear-gradient(to right, #2563eb, #9333ea);
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 150ms ease-in-out;
+  cursor: pointer;
+}
+
+.glow-btn:hover {
+  background-image: linear-gradient(to right, #3b82f6, #a855f7);
+  box-shadow: 0 10px 25px -3px rgba(37, 99, 235, 0.2);
+}
+
+.glow-btn:active {
+  transform: scale(0.98);
+}
+
+.glass-card {
+  background-color: rgba(24, 24, 27, 0.3);
+  border: 1px solid rgba(39, 39, 42, 0.4);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
