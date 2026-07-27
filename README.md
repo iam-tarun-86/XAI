@@ -1,37 +1,86 @@
-# SHAP vs LIME: Explainable AI Lab
+# 🔬 SHAP vs LIME: Explainable AI Suite & Interactive Dashboard
 
 Academic lab project for the **Explainable Artificial Intelligence (23AM501)** course, CSE (AI & ML), Sri Krishna College of Technology.
 
-## Overview
+---
 
-This project explores two of the most widely used frameworks for model interpretability — **SHAP (SHapley Additive exPlanations)** and **LIME (Local Interpretable Model-agnostic Explanations)** — by training a Random Forest classifier on the Wine dataset and analyzing its predictions through both global and local explanation techniques.
+## 📐 System Architecture
 
-## What's covered
+![Explainable AI Architecture Framework](./xai_framework_diagram.png)
 
-- **Model training** — Random Forest classifier trained on the Wine dataset
-- **Global interpretability (SHAP)** — SHAP summary plots and feature importance rankings across the entire dataset
-- **Local interpretability (SHAP)** — Waterfall plots and interactive force plots explaining individual predictions
-- **Feature interactions** — SHAP dependence analysis to understand how features interact with each other
-- **Local interpretability (LIME)** — Surrogate linear models for explaining single predictions
-- **Comparative analysis** — Measuring agreement/disagreement between SHAP and LIME explanations on the same instances
-- **Case study** — Deep-dive into a specific high-uncertainty prediction, examining which features pulled the model's decision in opposite directions
+---
 
-## Key takeaway
+## 🌟 Overview
 
-| | SHAP | LIME |
+This repository presents a comprehensive Explainable AI (XAI) framework comparing **SHAP (SHapley Additive exPlanations)** and **LIME (Local Interpretable Model-agnostic Explanations)**. The project evaluates model predictions on a **Random Forest Classifier** trained on the **Wine Dataset** through both static analytical notebooks and a **full-stack interactive web application**.
+
+### Key Features
+* 📊 **Dataset & Model Engineering**: Stratified classification problem analyzing 13 chemical properties of wine samples.
+* 🌎 **Global Interpretability**: SHAP summary beeswarm plots, mean absolute Shapley feature ranking, and feature dependence interaction analysis.
+* 🎯 **Local Interpretability**: Real-time side-by-side comparison of local SHAP attributions (Waterfall charts) and LIME surrogate linear model decision rules.
+* 🔍 **Uncertainty & Borderline Case Study**: Automated identification and dissection of high-uncertainty instances (predictions closest to 50% probability).
+* 💻 **Interactive Full-Stack Dashboard**: Built with **React, Vite, and Tailwind CSS** for the frontend, powered by a **Flask REST API** backend.
+
+---
+
+## 🚀 Getting Started & How to Run
+
+### One-Click Launch
+
+#### On Windows (PowerShell):
+```powershell
+.\start.ps1
+```
+
+#### On Linux / macOS / Git Bash:
+```bash
+./start.sh
+```
+
+Once launched, open your browser to interact with the suite:
+* 🌐 **Frontend Dashboard**: `http://localhost:5173`
+* ⚡ **Flask API Engine**: `http://localhost:5000`
+
+---
+
+## 📁 Repository Structure
+
+```
+├── SHAP_LIME_Lab.ipynb       # Main Jupyter notebook containing analytical experiments
+├── server.py                 # Flask REST API server exposing explanation endpoints
+├── app.py                    # Streamlit dashboard implementation
+├── frontend/                 # React + Vite + Tailwind CSS web dashboard source code
+│   ├── src/App.jsx           # Interactive dashboard layout & Recharts visual components
+│   └── src/index.css         # Custom glassmorphism styles and Tailwind CSS directives
+├── xai_framework_diagram.png # High-resolution system architectural framework diagram
+├── xai_framework_diagram.pdf # PDF format of the architectural diagram
+├── start.ps1                 # One-click startup script for PowerShell
+├── start.sh                  # One-click startup script for Bash
+└── requirements.txt          # Python dependencies
+```
+
+---
+
+## 📊 Framework Comparison Matrix
+
+| Attribute | SHAP (Shapley Additive exPlanations) | LIME (Local Interpretable Model-agnostic Explanations) |
 |---|---|---|
-| Basis | Game theory (Shapley values) | Local surrogate linear models |
-| Consistency | Deterministic, highly consistent | Stochastic, can vary between runs |
-| Speed | Slower (esp. KernelSHAP) | Faster, samples locally |
-| Scope | Global + local explanations | Primarily local |
-| Guarantees | Mathematically fair attribution | Heuristic, no formal guarantees |
+| **Theoretical Basis** | Cooperative Game Theory (Shapley values) | Local Surrogate Linear Models |
+| **Consistency** | Deterministic & mathematically consistent | Stochastic (varies slightly between perturbation runs) |
+| **Computation Speed** | Moderate to Slow (TreeSHAP optimized for trees) | Fast (local neighborhood sampling) |
+| **Explanation Scope** | Global + Local explanations | Primarily Local explanations |
+| **Axiomatic Guarantees**| Efficiency, Symmetry, Dummy, Additivity | Heuristic-based, no formal guarantees |
 
-**Use SHAP** when you need theoretically sound, consistent feature attribution across a model. **Use LIME** when you need a fast, intuitive explanation for one specific prediction, especially on high-dimensional data.
+---
 
-## Tech stack
+## 🛠️ Tech Stack
 
-Python, scikit-learn, SHAP, LIME, pandas, matplotlib
+* **Machine Learning & XAI**: Python, `scikit-learn`, `shap`, `lime`, `pandas`, `numpy`, `matplotlib`
+* **Backend API**: Flask, Flask-CORS
+* **Frontend Web App**: React, Vite, Tailwind CSS, Recharts, Lucide Icons
 
-## Course context
+---
 
-Built as a hands-on lab to understand explainable AI techniques — a growing requirement in real-world ML systems where model decisions need to be interpretable and auditable, not just accurate.
+## 🎓 Course Context
+
+Built as a hands-on lab to understand explainable AI techniques — a vital requirement in modern machine learning systems where model predictions must be transparent, interpretable, and auditable for real-world deployment.
