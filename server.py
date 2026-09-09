@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import os
 import pandas as pd
 import numpy as np
 from sklearn.datasets import load_wine
@@ -26,11 +27,17 @@ shap_values_class1 = None
 def init_dataset_and_model(n_estimators=100, max_depth=None):
     global model, X_train, X_test, y_train, y_test, feature_names, lime_explainer, shap_explainer, shap_values_class1
     
-    # Load dataset
-    wine = load_wine()
-    df = pd.DataFrame(data=wine.data, columns=wine.feature_names)
-    feature_names = list(wine.feature_names)
-    df['target'] = (wine.target > 0).astype(int)
+    # Load dataset from dataset directory if available
+    csv_path = os.path.join('dataset', 'wine_dataset.csv')
+    if os.path.exists(csv_path):
+        df = pd.read_csv(csv_path)
+        feature_names = [c for c in df.columns if c not in ['target', 'target_name']]
+        df['target'] = (df['target'] > 0).astype(int)
+    else:
+        wine = load_wine()
+        df = pd.DataFrame(data=wine.data, columns=wine.feature_names)
+        feature_names = list(wine.feature_names)
+        df['target'] = (wine.target > 0).astype(int)
     
     X = df[feature_names].values
     y = df['target'].values
