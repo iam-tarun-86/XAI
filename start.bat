@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 title XAI Dashboard Launcher
 
 echo ====================================================
-echo   Wine Classification XAI Dashboard (Windows)
+echo   Early Heart Attack Risk XAI Console (Windows)
 echo ====================================================
 echo.
 
