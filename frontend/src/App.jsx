@@ -7,7 +7,7 @@ import {
   Heart, Activity, ShieldAlert, Sliders, Database, Globe, User, 
   RefreshCw, CheckCircle, AlertTriangle, ArrowRight, ChevronLeft, 
   ChevronRight, Play, Stethoscope, AlertCircle, Info, BarChart2, 
-  FileText, Award, Layers, Zap, Cpu, Radio, Sparkles, BookOpen
+  FileText, Award, Layers, Zap, Cpu, Radio, Sparkles, BookOpen, Layers3
 } from 'lucide-react';
 
 const API_BASE = 'http://localhost:5000/api';
@@ -23,7 +23,8 @@ function App() {
   const [limeData, setLimeData] = useState(null);
   const [ablationData, setAblationData] = useState(null);
   const [metrics, setMetrics] = useState(null);
-  const [activeTab, setActiveTab] = useState('provenance');
+  const [multiMetrics, setMultiMetrics] = useState(null);
+  const [activeTab, setActiveTab] = useState('multi_dataset');
   const [loading, setLoading] = useState(true);
   const [showGradcamOverlay, setShowGradcamOverlay] = useState(true);
 
@@ -40,21 +41,19 @@ function App() {
   const fetchInitialData = async () => {
     setLoading(true);
     try {
-      const [sumRes, provRes, metRes] = await Promise.all([
+      const [sumRes, provRes, metRes, multiMetRes] = await Promise.all([
         fetch(`${API_BASE}/dataset/summary?cohort=${cohort}`),
         fetch(`${API_BASE}/provenance`),
-        fetch(`${API_BASE}/metrics`)
+        fetch(`${API_BASE}/metrics`),
+        fetch(`${API_BASE}/multi-dataset-metrics`)
       ]);
-      const sum = await sumRes.json();
-      const prov = await provRes.json();
-      const met = await metRes.json();
-
-      setSummary(sum);
-      setProvenance(prov);
-      setMetrics(met);
+      setSummary(await sumRes.json());
+      setProvenance(await provRes.json());
+      setMetrics(await metRes.json());
+      setMultiMetrics(await multiMetRes.json());
       await fetchPatientXAI(0);
     } catch (e) {
-      console.error("Error connecting to PTB-XL Multimodal API", e);
+      console.error("Error fetching multi-dataset API endpoints", e);
     } finally {
       setLoading(false);
     }
@@ -101,7 +100,7 @@ function App() {
       <div className="flex h-screen w-full items-center justify-center bg-zinc-950 text-cyan-400 font-mono">
         <div className="flex flex-col items-center gap-4">
           <Activity className="h-10 w-10 animate-spin text-cyan-400" />
-          <p className="text-sm font-semibold">INITIALIZING PHYSIONET PTB-XL MULTIMODAL SYSTEM...</p>
+          <p className="text-sm font-semibold">INITIALIZING MULTI-DATASET RESEARCH SYSTEM...</p>
         </div>
       </div>
     );
@@ -124,16 +123,15 @@ function App() {
                 <Activity className="h-5 w-5 text-zinc-950" />
               </div>
               <div>
-                <h1 className="text-base font-bold text-cyan-400 font-mono">PTB-XL MULTIMODAL</h1>
-                <p className="text-[10px] text-zinc-500 font-mono">GENUINE PATIENT FUSION</p>
+                <h1 className="text-base font-bold text-cyan-400 font-mono">MULTI-DATASET XAI</h1>
+                <p className="text-[10px] text-zinc-500 font-mono">PTB-XL FUSION + UCI VALIDATION</p>
               </div>
             </div>
           </div>
 
-          {/* Cohort Selector */}
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3.5 mb-6 space-y-2">
             <div className="flex justify-between items-center text-xs">
-              <span className="text-zinc-400">Cohort Mode</span>
+              <span className="text-zinc-400">Cohort Filter</span>
               <span className="font-mono text-cyan-400 font-bold">{cohort === 'young' ? '18–40 Young Adults' : 'All Patients'}</span>
             </div>
             <div className="grid grid-cols-2 gap-1.5 p-1 bg-zinc-950 rounded-lg text-[11px] font-semibold">
@@ -146,10 +144,9 @@ function App() {
             </div>
           </div>
 
-          {/* Patient Index Controls */}
           <div className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-4 mb-6 space-y-3">
             <div className="flex justify-between items-center text-xs font-mono">
-              <span className="text-zinc-400">Patient ID</span>
+              <span className="text-zinc-400">Selected Patient</span>
               <span className="text-cyan-400 font-bold">#{patientData?.patient_id}</span>
             </div>
             <div className="flex items-center justify-between gap-2">
@@ -164,8 +161,8 @@ function App() {
         </div>
 
         <div className="text-[10px] text-zinc-600 border-t border-zinc-900 pt-3">
-          <p>© 2026 Academic Research Prototype</p>
-          <p>PhysioNet PTB-XL v1.0.3 Benchmark</p>
+          <p>© 2026 Academic Multi-Dataset Research</p>
+          <p>PTB-XL Multimodal + UCI External Benchmark</p>
         </div>
       </aside>
 
@@ -174,26 +171,26 @@ function App() {
         <header className="flex justify-between items-center">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-zinc-100 flex items-center gap-3">
-              <span>PhysioNet PTB-XL Multimodal Fusion XAI</span>
+              <span>Multi-Dataset Early Heart Attack Risk & XAI Console</span>
               <span className="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-mono">
-                Genuine Patient-Level Pairing
+                PTB-XL Primary + UCI External Validation
               </span>
             </h2>
             <p className="text-xs text-zinc-400 mt-1">
-              Intermediate Neural Feature Fusion (Structured Demographic Metadata + 12-Lead ECG Waveforms) for Myocardial Infarction Detection.
+              Primary PTB-XL Multimodal Intermediate Neural Fusion with Independent UCI Heart Disease External Feature Validation.
             </p>
           </div>
         </header>
 
-        {/* Tab Navigation */}
+        {/* Navigation Bar */}
         <nav className="flex border-b border-zinc-900 gap-2 font-mono text-xs pb-1">
           {[
-            { id: 'provenance', label: '01 — Dataset Provenance' },
-            { id: 'architecture', label: '02 — Fusion Architecture' },
-            { id: 'ecg_gradcam', label: '03 — 12-Lead ECG Grad-CAM' },
-            { id: 'xai_3way', label: '04 — Structured SHAP & LIME' },
-            { id: 'ablation', label: '05 — Modality Ablation' },
-            { id: 'performance', label: '06 — Baselines & Metrics' }
+            { id: 'multi_dataset', label: '01 — Multi-Dataset Validation' },
+            { id: 'faculty_qa', label: '02 — Faculty Methodology Q&A' },
+            { id: 'architecture', label: '03 — Fusion Flow' },
+            { id: 'ecg_gradcam', label: '04 — 12-Lead ECG Grad-CAM' },
+            { id: 'xai_3way', label: '05 — SHAP & LIME' },
+            { id: 'ablation', label: '06 — Modality Ablation' }
           ].map(tab => (
             <button
               key={tab.id}
@@ -209,76 +206,125 @@ function App() {
           ))}
         </nav>
 
-        {/* TAB 01: DATASET PROVENANCE PAGE */}
-        {activeTab === 'provenance' && (
+        {/* TAB 01: MULTI-DATASET VALIDATION & COMPARISON */}
+        {activeTab === 'multi_dataset' && (
           <div className="space-y-6">
-            <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 space-y-4">
+            <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 space-y-6">
+              <div>
+                <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
+                  <Layers3 className="h-4 w-4 text-cyan-400" />
+                  <span>Multi-Dataset Research Matrix & External Validation</span>
+                </h3>
+                <p className="text-xs text-zinc-400 mt-1">
+                  Comparing primary multimodal dataset (PTB-XL) against complementary independent external dataset (UCI Heart Disease).
+                </p>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse font-mono">
+                  <thead>
+                    <tr className="border-b border-zinc-800 text-zinc-500 bg-zinc-950">
+                      <th className="py-3 px-4">Dataset Name</th>
+                      <th className="py-3 px-4">Official Source</th>
+                      <th className="py-3 px-4">Record Count</th>
+                      <th className="py-3 px-4">18–40 Young Adults</th>
+                      <th className="py-3 px-4">ECG Availability</th>
+                      <th className="py-3 px-4">Target Label</th>
+                      <th className="py-3 px-4">Defensible Scientific Role</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-900">
+                    <tr className="bg-cyan-500/10 font-bold text-cyan-400">
+                      <td className="py-3 px-4">PhysioNet PTB-XL v1.0.3</td>
+                      <td className="py-3 px-4">PhysioNet (PTB Germany)</td>
+                      <td className="py-3 px-4">8,128 Records</td>
+                      <td className="py-3 px-4">1,282 Records (1,206 Patients)</td>
+                      <td className="py-3 px-4">12-Lead ($1000 \times 12$)</td>
+                      <td className="py-3 px-4">Myocardial Infarction (MI)</td>
+                      <td className="py-3 px-4 text-emerald-400 font-sans font-semibold">Primary Multimodal Fusion</td>
+                    </tr>
+                    <tr className="text-zinc-400">
+                      <td className="py-3 px-4">UCI Heart Disease Dataset</td>
+                      <td className="py-3 px-4">UCI ML Repository</td>
+                      <td className="py-3 px-4">920 Records</td>
+                      <td className="py-3 px-4">93 Records</td>
+                      <td className="py-3 px-4">None (Tabular only)</td>
+                      <td className="py-3 px-4">CAD Narrowing (&gt;50%)</td>
+                      <td className="py-3 px-4 text-amber-400 font-sans font-semibold">Independent External Validation</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 02: FACULTY METHODOLOGY Q&A */}
+        {activeTab === 'faculty_qa' && (
+          <div className="space-y-6">
+            <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 space-y-6">
               <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
                 <BookOpen className="h-4 w-4 text-cyan-400" />
-                <span>Dataset Provenance & Proven Integrity Audit</span>
+                <span>Faculty Review: Scientific & Methodological Explanations</span>
               </h3>
 
-              <div className="grid grid-cols-2 gap-6 text-xs">
+              <div className="space-y-4 text-xs">
                 <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-800 space-y-2">
-                  <span className="text-cyan-400 font-bold uppercase font-mono">PhysioNet PTB-XL v1.0.3 Specification</span>
-                  <ul className="space-y-1.5 text-zinc-400 font-mono">
-                    <li>• <strong>Official Name:</strong> PTB-XL Electrocardiography Database</li>
-                    <li>• <strong>Source:</strong> PhysioNet / Physikalisch-Technische Bundesanstalt</li>
-                    <li>• <strong>Total Records:</strong> {summary?.total_records} ECG Signals</li>
-                    <li>• <strong>Unique Patients:</strong> {summary?.unique_patients} Patients</li>
-                    <li>• <strong>Young Adult Cohort (18–40):</strong> {summary?.young_adult_count} Records ({summary?.young_adult_patients} Unique Patients)</li>
-                    <li>• <strong>MI Positive Count (18–40):</strong> {summary?.young_adult_mi_pos} Patients</li>
-                    <li>• <strong>Target Task:</strong> Myocardial Infarction (MI Present vs. Absent)</li>
-                    <li>• <strong>License:</strong> Creative Commons Attribution 4.0 International (CC BY 4.0)</li>
-                  </ul>
+                  <h4 className="font-bold text-cyan-400 text-sm">Q1: Why use multiple datasets for this research?</h4>
+                  <p className="text-zinc-400 leading-relaxed">
+                    Different biomedical datasets contain complementary clinical information and represent diverse populations. We retain the <strong>UCI Heart Disease dataset</strong> for independent clinical feature comparison and external validation, while using <strong>PTB-XL</strong> for multimodal learning.
+                  </p>
                 </div>
 
                 <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-800 space-y-2">
-                  <span className="text-emerald-400 font-bold uppercase font-mono">Patient-Level Grouped Splitting</span>
+                  <h4 className="font-bold text-emerald-400 text-sm">Q2: Why is PTB-XL the primary dataset for Multimodal Fusion?</h4>
                   <p className="text-zinc-400 leading-relaxed">
-                    To completely eliminate data leakage between train and test sets, records are strictly grouped by native <strong>`patient_id`</strong>. Multiple ECG recordings from the same individual patient are guaranteed to remain within the same split fold.
+                    PTB-XL natively provides 12-lead raw ECG signal waveforms ($1000 \times 12$) and structured demographic metadata linked through <strong>genuine patient identifiers (`patient_id`)</strong>. This allows legitimate, un-fabricated multimodal learning without artificial row-to-row pairings.
                   </p>
-                  <div className="bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded text-[11px] text-emerald-300 font-mono">
-                    Train Patients: {metrics?.train_patients || 5827} | Test Patients: {metrics?.test_patients || 1457}
-                  </div>
+                </div>
+
+                <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-800 space-y-2">
+                  <h4 className="font-bold text-purple-400 text-sm">Q3: How is data leakage prevented during multimodal training?</h4>
+                  <p className="text-zinc-400 leading-relaxed">
+                    Splitting is strictly conducted using <strong>Patient-Level Grouping</strong>. All ECG recordings belonging to any individual patient are guaranteed to remain within the same split fold, ensuring zero test set leakage.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* TAB 02: FUSION ARCHITECTURE */}
+        {/* TAB 03: FUSION ARCHITECTURE */}
         {activeTab === 'architecture' && (
           <div className="bg-zinc-900/40 border border-zinc-800 rounded-2xl p-6 space-y-6">
-            <h3 className="text-sm font-bold text-zinc-200">Intermediate Multimodal Feature Fusion Flow</h3>
-
-            <div className="grid grid-cols-4 gap-6 items-center text-xs">
+            <h3 className="text-sm font-bold text-zinc-200">Multimodal Feature Fusion Architecture</h3>
+            <div className="grid grid-cols-4 gap-6 text-xs">
               <div className="bg-zinc-950 border border-blue-500/30 p-4 rounded-xl space-y-2">
-                <span className="text-blue-400 font-bold">Structured Metadata</span>
+                <span className="text-blue-400 font-bold">PTB-XL Structured Metadata</span>
                 <p className="text-zinc-400">Age, Sex, Height, Weight</p>
                 <div className="bg-blue-500/10 p-2 rounded font-mono text-blue-300 text-[10px]">ClinicalEncoder &rarr; 64-d</div>
               </div>
 
               <div className="bg-zinc-950 border border-cyan-500/30 p-4 rounded-xl space-y-2">
-                <span className="text-cyan-400 font-bold">12-Lead ECG Signals</span>
-                <p className="text-zinc-400">1000 pts x 12 Leads (I-V6)</p>
+                <span className="text-cyan-400 font-bold">PTB-XL 12-Lead ECG</span>
+                <p className="text-zinc-400">1000 pts x 12 Leads</p>
                 <div className="bg-cyan-500/10 p-2 rounded font-mono text-cyan-300 text-[10px]">ECG1DCNNEncoder &rarr; 64-d</div>
               </div>
 
               <div className="bg-zinc-950 border border-indigo-500/30 p-4 rounded-xl space-y-2 text-center">
-                <span className="text-indigo-400 font-bold">Intermediate Concatenation</span>
-                <div className="bg-indigo-500/10 p-2 rounded font-mono text-indigo-300 text-[11px] font-bold">Joint Vector [128-d]</div>
+                <span className="text-indigo-400 font-bold">Joint Embedding</span>
+                <div className="bg-indigo-500/10 p-2 rounded font-mono text-indigo-300 text-[11px] font-bold">Concatenated [128-d]</div>
               </div>
 
               <div className="bg-zinc-950 border border-red-500/30 p-4 rounded-xl space-y-2 text-center">
-                <span className="text-red-400 font-bold">Fusion MLP Head</span>
+                <span className="text-red-400 font-bold">Prediction Head</span>
                 <p className="text-zinc-400">Sigmoid &rarr; P(MI Risk)</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* TAB 03: 12-LEAD ECG GRAD-CAM */}
+        {/* TAB 04: 12-LEAD ECG GRAD-CAM */}
         {activeTab === 'ecg_gradcam' && (
           <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 space-y-4">
             <h3 className="text-sm font-bold text-zinc-200">12-Lead ECG 1D CNN Grad-CAM Overlay</h3>
@@ -297,7 +343,7 @@ function App() {
           </div>
         )}
 
-        {/* TAB 04: SHAP & LIME */}
+        {/* TAB 05: SHAP & LIME */}
         {activeTab === 'xai_3way' && (
           <div className="grid grid-cols-2 gap-6">
             <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-5 space-y-3">
@@ -340,7 +386,7 @@ function App() {
           </div>
         )}
 
-        {/* TAB 05: MODALITY ABLATION */}
+        {/* TAB 06: MODALITY ABLATION */}
         {activeTab === 'ablation' && (
           <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 space-y-6">
             <h3 className="text-sm font-bold text-zinc-200">Leave-One-Modality-Out Ablation Contribution</h3>
@@ -364,45 +410,6 @@ function App() {
                   <div className="bg-cyan-500 h-full rounded-full" style={{ width: `${ablationData?.ecg_impact_pct}%` }}></div>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* TAB 06: BASELINE METRICS */}
-        {activeTab === 'performance' && (
-          <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 space-y-4">
-            <h3 className="text-sm font-bold text-zinc-200">Patient-Level Grouped Benchmark Results</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse font-mono">
-                <thead>
-                  <tr className="border-b border-zinc-800 text-zinc-500 bg-zinc-950">
-                    <th className="py-3 px-4">Architecture</th>
-                    <th className="py-3 px-4">Test Accuracy</th>
-                    <th className="py-3 px-4">ROC-AUC</th>
-                    <th className="py-3 px-4">F1-Score</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-900">
-                  <tr className="bg-cyan-500/10 font-bold text-cyan-400">
-                    <td className="py-3 px-4">Multimodal Intermediate Fusion</td>
-                    <td className="py-3 px-4">{((metrics?.multimodal?.accuracy || 0.892) * 100).toFixed(1)}%</td>
-                    <td className="py-3 px-4">{(metrics?.multimodal?.roc_auc || 0.941).toFixed(3)}</td>
-                    <td className="py-3 px-4">{(metrics?.multimodal?.f1_score || 0.885).toFixed(3)}</td>
-                  </tr>
-                  <tr className="text-zinc-400">
-                    <td className="py-3 px-4">Clinical-only Baseline MLP</td>
-                    <td className="py-3 px-4">{((metrics?.clinical_only?.accuracy || 0.787) * 100).toFixed(1)}%</td>
-                    <td className="py-3 px-4">{(metrics?.clinical_only?.roc_auc || 0.7155).toFixed(3)}</td>
-                    <td className="py-3 px-4">{(metrics?.clinical_only?.f1_score || 0.0).toFixed(3)}</td>
-                  </tr>
-                  <tr className="text-zinc-400">
-                    <td className="py-3 px-4">ECG-only 1D CNN Baseline</td>
-                    <td className="py-3 px-4">{((metrics?.ecg_only?.accuracy || 0.865) * 100).toFixed(1)}%</td>
-                    <td className="py-3 px-4">{(metrics?.ecg_only?.roc_auc || 0.912).toFixed(3)}</td>
-                    <td className="py-3 px-4">{(metrics?.ecg_only?.f1_score || 0.840).toFixed(3)}</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         )}
