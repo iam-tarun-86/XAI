@@ -25,21 +25,11 @@ This repository presents a comprehensive Explainable AI (XAI) framework comparin
 
 ## 🚀 Getting Started & How to Run
 
-### One-Click Launch
+### One-Click Launch (Windows)
 
-#### On Windows (Double-Click or Command Prompt):
+Double-click `start.bat` in File Explorer or run in Command Prompt / PowerShell:
 ```cmd
 start.bat
-```
-
-#### On Windows (PowerShell):
-```powershell
-.\start.ps1
-```
-
-#### On Linux / macOS / Git Bash:
-```bash
-./start.sh
 ```
 
 Once launched, open your browser to interact with the suite:
@@ -59,8 +49,7 @@ Once launched, open your browser to interact with the suite:
 │   └── src/index.css         # Custom glassmorphism styles and Tailwind CSS directives
 ├── xai_framework_diagram.png # High-resolution system architectural framework diagram
 ├── xai_framework_diagram.pdf # PDF format of the architectural diagram
-├── start.ps1                 # One-click startup script for PowerShell
-├── start.sh                  # One-click startup script for Bash
+├── start.bat                 # Windows startup and process manager script
 └── requirements.txt          # Python dependencies
 ```
 
