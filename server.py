@@ -206,5 +206,21 @@ def get_metrics():
         }
     return jsonify(m)
 
+@app.route('/api/leakage-audit', methods=['GET'])
+def get_leakage_audit():
+    audit_path = 'models/leakage_audit.json'
+    if os.path.exists(audit_path):
+        with open(audit_path, 'r') as f:
+            return jsonify(json.load(f))
+    return jsonify({"error": "Leakage audit report not found"}), 440
+
+@app.route('/api/evaluation-report', methods=['GET'])
+def get_evaluation_report():
+    eval_path = 'models/evaluation_report.json'
+    if os.path.exists(eval_path):
+        with open(eval_path, 'r') as f:
+            return jsonify(json.load(f))
+    return jsonify({"error": "Evaluation report not found"}), 440
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

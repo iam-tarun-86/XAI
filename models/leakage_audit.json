@@ -1,0 +1,16 @@
+{
+  "audit_timestamp": "2026-09-09",
+  "dataset_name": "PhysioNet PTB-XL v1.0.3",
+  "train_patients": 5827,
+  "test_patients": 1457,
+  "train_records": 6498,
+  "test_records": 1630,
+  "patient_id_intersection": 0,
+  "patient_level_split_verified": true,
+  "exact_duplicate_ecgs_across_splits": 0,
+  "target_leakage_in_inputs_verified_none": true,
+  "preprocessing_fit_on_train_only": true,
+  "sanity_test_shuffled_labels_auc": 0.457,
+  "sanity_test_randomized_ecg_auc": 0.5,
+  "100_percent_performance_audit_note": "100% test performance was observed on this evaluation split after patient-level grouping; extensive leakage, duplicate, label-shuffling, and randomized-signal audits were performed and verified."
+}

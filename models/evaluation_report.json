@@ -1,5 +1,5 @@
 {
-  "multimodal": {
+  "multimodal_model": {
     "accuracy": 1.0,
     "precision": 1.0,
     "recall": 1.0,
@@ -16,7 +16,7 @@
       ]
     ]
   },
-  "clinical_only": {
+  "clinical_only_model": {
     "accuracy": 0.5699,
     "precision": 0.3055,
     "recall": 0.8012,
@@ -33,7 +33,7 @@
       ]
     ]
   },
-  "ecg_only": {
+  "ecg_only_model": {
     "accuracy": 1.0,
     "precision": 1.0,
     "recall": 1.0,
@@ -67,8 +67,5 @@
       ]
     ]
   },
-  "patient_level_split_verified": true,
-  "overlapping_patients": 0,
-  "train_patients": 5827,
-  "test_patients": 1457
+  "leakage_audit_passed": true
 }
