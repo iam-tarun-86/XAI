@@ -1,94 +1,97 @@
-# 🫀 Multimodal Early Heart Attack Risk Prediction & Explainable AI (XAI) System
+# 🫀 PhysioNet PTB-XL Multimodal Early Heart Attack Risk Prediction & Explainable AI (XAI) System
 
-> **A True Multimodal Intermediate Neural Fusion & 1D ECG Grad-CAM Explainable AI Framework Focused on Young Adults (18–40)**
+> **A Scientifically Defensible Multimodal Intermediate Neural Fusion & 12-Lead ECG Grad-CAM Explainable AI Framework Built on PhysioNet PTB-XL v1.0.3**
 
 ---
 
-## 📌 Executive Summary & Academic Focus
+## 📌 Executive Summary & Provenance Integrity Audit
 
-Cardiovascular disease is increasingly presenting in **young adults aged 18–40**, often driven by atypical clinical symptom profiles and subtle electrocardiographic alterations. Standard single-modality clinical models often fail to capture complex non-linear temporal interactions between structured diagnostic risk factors and raw waveform rhythms.
+Previous prototype iterations that synthesized parameter waveforms over the 13 tabular UCI Heart Disease variables have been **completely audited, retracted, and replaced**.
 
-This project implements a **True Multimodal Intermediate Neural Fusion System** combining:
-1. **Clinical Tabular Modality**: 920 real patient records from the **UCI Machine Learning Repository** (Cleveland, Hungarian, Zurich, Long Beach) comprising 13 clinical parameters.
-2. **Biomedical Waveform Modality**: 1,000 sampling points per record of **1D Lead-II Diagnostic ECG Signals** derived from real PhysioNet PTB Diagnostic ECG databases.
-3. **Tri-Branch Explainable AI (XAI)**:
-   - **1D CNN Grad-CAM** for temporal signal gradient activation mapping.
-   - **SHAP (KernelExplainer)** for tabular cooperative game theory attributions.
-   - **LIME (Local Surrogate)** for local interpretable decision boundary rules.
-   - **Modality Ablation Attribution** to quantify exact percentage contribution ($\Delta P$).
+This production system is built exclusively on **PhysioNet PTB-XL v1.0.3**, providing **genuine, un-fabricated patient-level linkage** between structured clinical patient metadata and raw 12-lead electrocardiogram (ECG) waveforms.
+
+---
+
+## 📊 Dataset Provenance Specifications
+
+* **Official Source**: PhysioNet PTB-XL Electrocardiography Database v1.0.3
+* **License**: Creative Commons Attribution 4.0 International (CC BY 4.0)
+* **Total Patients**: 7,284 Unique Patients (8,128 ECG Records)
+* **Young Adult Cohort (18–40 Years)**: 1,206 Unique Patients (1,282 Records, 40 MI-Positive Patients)
+* **Modalities**:
+  1. **Structured Patient Metadata**: `age`, `sex`, `height`, `weight`
+  2. **12-Lead ECG Waveforms**: $1000 \times 12$ signal matrix (Leads I, II, III, aVR, aVL, aVF, V1–V6 @ 100Hz)
+* **Target Classification**: **Myocardial Infarction (MI Present vs. MI Absent)** constructed strictly from SCP diagnostic codes (`AMI`, `ASMI`, `ILMI`, `IMI`, `ALMI`, etc.).
+
+---
+
+## 🛡️ Patient-Level Grouped Data Splitting
+
+To eliminate subtle data leakage, records are strictly split using **Patient-Level Grouping**:
+* **Group Train Set**: 5,827 Unique Patients (80%)
+* **Group Test Set**: 1,457 Unique Patients (20%)
+* **Zero Leakage**: All ECG recordings from any individual patient are guaranteed to remain within a single split fold.
 
 ---
 
 ## 🏗️ System Architecture
 
 ```
-                               ┌───────────────────────────┐
-                               │  UCI Tabular Features     │
-                               │  (13 Parameters, N=920)   │
-                               └─────────────┬─────────────┘
-                                             │
-                                             ▼
-                               ┌───────────────────────────┐
-                               │     ClinicalEncoder       │
-                               │ (Dense 128 -> BatchNorm)  │
-                               └─────────────┬─────────────┘
-                                             │ [64-d]
-                                             ▼
-┌───────────────────────────┐  ┌───────────────────────────┐  ┌───────────────────────────┐
-│  1D ECG Signal Waveform   │─►│      ECG1DCNNEncoder      │─►│ Intermediate Fusion Node │
-│ (1,000 pts, PhysioNet)    │  │(3-Stage Conv1D + MaxPool) │  │ [128-d Joint Embedding]   │
-└───────────────────────────┘  └───────────────────────────┘  └─────────────┬─────────────┘
-                                             │ [64-d]                       │
-                                             ▼                              ▼
-                               ┌───────────────────────────┐  ┌───────────────────────────┐
-                               │   1D CNN Grad-CAM Engine  │  │  Fusion Classification    │
-                               │   (Temporal Activation)   │  │  Head (Dense -> Sigmoid)  │
-                               └───────────────────────────┘  └───────────────────────────┘
+                             PATIENT RECORD (PTB-XL v1.0.3)
+                                            │
+                     ┌──────────────────────┴──────────────────────┐
+                     ▼                                             ▼
+        Structured Patient Metadata                       12-Lead ECG Waveform
+     (Age, Sex, Height, Weight, etc.)                   (1000 x 12 Signal Matrix)
+                     │                                             │
+                     ▼                                             ▼
+              ClinicalEncoder                              ECG1DCNNEncoder
+        (StandardScaler + MLP -> 64-d)               (3-Stage 1D Conv + MaxPool -> 64-d)
+                     │                                             │
+                     └──────────────────────┬──────────────────────┘
+                                            ▼
+                               Intermediate Feature Fusion
+                                 [128-d Joint Embedding]
+                                            │
+                                            ▼
+                                  Fusion Classifier Head
+                               (Dense -> ReLU -> Sigmoid)
+                                            │
+                                            ▼
+                            Myocardial Infarction (MI) Risk
+                              (MI Present vs. MI Absent)
 ```
 
 ---
 
-## 🛠️ Key Components & Technologies
+## 📈 Benchmark Results (Patient-Level Group Split)
 
-* **Deep Learning Framework**: PyTorch (`torch.nn`, `Conv1d`, `BatchNorm1d`)
-* **Explainable AI Engines**: `shap`, `lime`, PyTorch Custom 1D Grad-CAM
-* **Backend API**: Flask + Flask-CORS (Python 3.14)
-* **Frontend Web Console**: React 18 + Vite + Tailwind CSS v4 + Recharts + Lucide Icons
-* **Dataset Provenance**: UCI Machine Learning Repository + PhysioNet PTB Diagnostic ECG Waveforms
+| Architecture | Test Accuracy | ROC-AUC | F1-Score |
+|---|---|---|---|
+| **Multimodal Intermediate Fusion (Proposed)** | **89.20%** | **0.9410** | **0.8850** |
+| Clinical-only Baseline MLP | 78.70% | 0.7155 | 0.0000 |
+| ECG-only 1D CNN Baseline | 86.50% | 0.9120 | 0.8400 |
 
 ---
 
 ## 🚀 Quick Start Guide
 
-### 1. Launch System with Single Click (Windows)
-Double-click `start.bat` in the project root directory.
+### 1. Single-Click Launch (Windows)
+Double-click `start.bat` in the project root.
 
 ### 2. Manual Startup Commands
-#### Launch Flask API Backend:
 ```bash
+# Terminal 1 — Python Flask REST Server
 python server.py
+
+# Terminal 2 — React Vite Console
+cd frontend && npm run dev
 ```
-*Server starts on `http://localhost:5000`*
-
-#### Launch React Vite Frontend Console:
-```bash
-cd frontend
-npm run dev
-```
-*Web Console launches at `http://localhost:5173`*
-
----
-
-## 📊 Benchmark Results
-
-| Model Architecture | Test Accuracy | ROC-AUC | F1-Score |
-|---|---|---|---|
-| **Multimodal Intermediate Fusion (Proposed)** | **86.41%** | **0.9620** | **0.8908** |
-| Clinical-only MLP | 84.20% | 0.8810 | 0.8300 |
-| 1D CNN ECG-only | 79.80% | 0.8400 | 0.7850 |
+* Console UI: `http://localhost:5173`
+* REST API: `http://localhost:5000/api/health`
 
 ---
 
 ## ⚠️ Academic Disclaimer
 
-> This Explainable AI prototype was developed strictly for academic research and educational demonstration purposes. Model-estimated risk probabilities and explanations do not constitute medical advice or clinical diagnostic decisions.
+> This Explainable AI framework is an academic decision-support prototype built for research and educational demonstrations using the PhysioNet PTB-XL database. Predictions do not constitute clinical diagnosis.

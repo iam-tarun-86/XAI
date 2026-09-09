@@ -1,9 +1,20 @@
 {
-  "accuracy": 0.8641304347826086,
-  "roc_auc": 0.9619799139167863,
-  "f1_score": 0.8908296943231441,
-  "precision": 0.8031496062992126,
-  "recall": 1.0,
-  "train_records": 736,
-  "test_records": 184
+  "multimodal": {
+    "accuracy": 1.0,
+    "roc_auc": 1.0,
+    "f1_score": 1.0
+  },
+  "clinical_only": {
+    "accuracy": 0.7877300613496933,
+    "roc_auc": 0.7209889465657084,
+    "f1_score": 0.028089887640449437
+  },
+  "ecg_only": {
+    "accuracy": 1.0,
+    "roc_auc": 1.0,
+    "f1_score": 1.0
+  },
+  "patient_level_split": true,
+  "train_patients": 5827,
+  "test_patients": 1457
 }

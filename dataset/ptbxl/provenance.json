@@ -1,0 +1,32 @@
+{
+  "total_records": 8128,
+  "unique_patients": 7284,
+  "mi_positive_records": 1750,
+  "mi_negative_records": 6378,
+  "young_adults_18_40_records": 1282,
+  "young_adults_18_40_patients": 1206,
+  "young_adults_mi_positive": 40,
+  "clinical_features": [
+    "age",
+    "sex",
+    "height",
+    "weight"
+  ],
+  "ecg_leads": [
+    "I",
+    "II",
+    "III",
+    "aVR",
+    "aVL",
+    "aVF",
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5",
+    "V6"
+  ],
+  "sampling_points": 1000,
+  "sampling_rate_hz": 100,
+  "provenance": "PhysioNet PTB-XL v1.0.3 (Fully Linked Patient Metadata + 12-Lead ECG Waveforms)"
+}
