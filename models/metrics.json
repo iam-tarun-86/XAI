@@ -17,19 +17,19 @@
     ]
   },
   "clinical_only": {
-    "accuracy": 0.5515,
-    "precision": 0.2992,
-    "recall": 0.8242,
-    "f1_score": 0.439,
-    "roc_auc": 0.7165,
+    "accuracy": 0.5393,
+    "precision": 0.2918,
+    "recall": 0.8156,
+    "f1_score": 0.4298,
+    "roc_auc": 0.7135,
     "confusion_matrix": [
       [
-        613,
-        670
+        596,
+        687
       ],
       [
-        61,
-        286
+        64,
+        283
       ]
     ]
   },

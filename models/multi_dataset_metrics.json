@@ -41,6 +41,7 @@
       ]
     ],
     "records": 920,
-    "young_adults_18_40": 93
+    "young_adults_18_40": 93,
+    "methodology_note": "UCI dataset features CAD narrowing target whereas PTB-XL features explicit MI diagnostic target. Therefore, UCI serves as an independent tabular dataset benchmark rather than a direct mathematical external validation."
   }
 }
