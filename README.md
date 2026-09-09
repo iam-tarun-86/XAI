@@ -27,6 +27,11 @@ This repository presents a comprehensive Explainable AI (XAI) framework comparin
 
 ### One-Click Launch
 
+#### On Windows (Double-Click or Command Prompt):
+```cmd
+start.bat
+```
+
 #### On Windows (PowerShell):
 ```powershell
 .\start.ps1
