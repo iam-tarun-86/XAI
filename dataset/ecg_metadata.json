@@ -1,0 +1,8 @@
+{
+  "num_records": 920,
+  "sampling_points": 1000,
+  "sampling_rate_hz": 500,
+  "lead": "Lead II Diagnostic ECG",
+  "provenance": "PhysioNet PTB Diagnostic Waveform Parameterization paired with UCI Heart Disease Records",
+  "cohort_18_40_count": 93
+}
