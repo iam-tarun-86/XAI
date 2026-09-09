@@ -1,8 +1,10 @@
 {
   "multimodal": {
     "accuracy": 1.0,
-    "roc_auc": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
     "f1_score": 1.0,
+    "roc_auc": 1.0,
     "confusion_matrix": [
       [
         1283,
@@ -15,29 +17,28 @@
     ]
   },
   "clinical_only": {
-    "accuracy": 0.5355828220858896,
-    "roc_auc": 0.7198344118723902,
-    "precision": 0.2916666666666667,
-    "recall": 0.8270893371757925,
-    "f1_score": 0.43125469571750563,
+    "accuracy": 0.5515,
+    "precision": 0.2992,
+    "recall": 0.8242,
+    "f1_score": 0.439,
+    "roc_auc": 0.7165,
     "confusion_matrix": [
       [
-        586,
-        697
+        613,
+        670
       ],
       [
-        60,
-        287
+        61,
+        286
       ]
-    ],
-    "loss_function": "BCEWithLogitsLoss (Class-Weighted pos_weight=3.63)",
-    "classification_threshold": 0.5,
-    "audit_note": "Resolved F1=0 issue by introducing class-weighted BCE loss to account for 3.63:1 class imbalance."
+    ]
   },
   "ecg_only": {
     "accuracy": 1.0,
-    "roc_auc": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
     "f1_score": 1.0,
+    "roc_auc": 1.0,
     "confusion_matrix": [
       [
         1283,
