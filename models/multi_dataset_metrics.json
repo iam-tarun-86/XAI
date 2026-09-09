@@ -2,19 +2,22 @@
   "primary_multimodal_ptbxl": {
     "dataset_name": "PhysioNet PTB-XL v1.0.3",
     "role": "Primary Multimodal Fusion (Linked Patient Metadata + 12-Lead ECG)",
+    "target": "Myocardial Infarction (MI Present vs Absent)",
     "accuracy": 1.0,
     "roc_auc": 1.0,
     "f1_score": 1.0,
     "records": 8128,
     "young_adults_18_40": 1282
   },
-  "external_validation_uci": {
+  "independent_benchmark_uci": {
     "dataset_name": "UCI Heart Disease Repository",
-    "role": "Independent External Clinical Validation & Rich Feature Comparison",
+    "role": "Independent Dataset Benchmark & Clinical Feature Comparison (NOT Direct External Validation)",
+    "target": "Coronary Artery Disease narrowing (>50%)",
     "accuracy": 0.6909090909090909,
     "roc_auc": 0.6810529883628968,
     "f1_score": 0.7875,
     "records": 920,
-    "young_adults_18_40": 93
+    "young_adults_18_40": 93,
+    "methodology_note": "UCI dataset features CAD narrowing target whereas PTB-XL features explicit MI diagnostic target. Therefore, UCI serves as an independent tabular dataset benchmark rather than a direct mathematical external validation."
   }
 }
